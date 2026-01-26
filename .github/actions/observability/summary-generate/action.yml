@@ -58,7 +58,7 @@ runs:
         EOF
         
         # Add metrics if provided
-        # Use base64 encoding to safely handle JSON with special characters
+        # Store in variable with single quotes to safely handle JSON with special characters
         METRICS_INPUT='${{ inputs.metrics }}'
         if [[ -n "$METRICS_INPUT" ]]; then
           cat >> "$SUMMARY_FILE" << 'EOF'
