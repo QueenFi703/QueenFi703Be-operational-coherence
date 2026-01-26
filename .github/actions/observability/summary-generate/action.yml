@@ -29,6 +29,10 @@ runs:
       run: |
         mkdir -p .metrics
         
+        # Generate unique ID for this summary
+        UNIQUE_ID="$(date +%s%N | md5sum | head -c 8)"
+        echo "unique-id=$UNIQUE_ID" >> $GITHUB_OUTPUT
+        
         SUMMARY_FILE=".metrics/summary-${{ inputs.phase }}.md"
         
         # Determine status emoji
@@ -92,6 +96,7 @@ runs:
     - name: Upload summary artifact
       uses: actions/upload-artifact@v4
       with:
-        name: summary-${{ inputs.phase }}
+        name: summary-${{ inputs.phase }}-${{ steps.generate.outputs.unique-id }}
         path: .metrics/summary-${{ inputs.phase }}.md
         retention-days: 30
+        if-no-files-found: warn
