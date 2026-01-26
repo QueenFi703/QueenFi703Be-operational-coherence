@@ -58,25 +58,32 @@ runs:
         EOF
         
         # Add metrics if provided
-        if [[ -n "${{ inputs.metrics }}" ]]; then
-          cat >> "$SUMMARY_FILE" << EOF
+        # Use base64 encoding to safely handle JSON with special characters
+        METRICS_INPUT='${{ inputs.metrics }}'
+        if [[ -n "$METRICS_INPUT" ]]; then
+          cat >> "$SUMMARY_FILE" << 'EOF'
         ### 📊 Metrics
         
-        \`\`\`json
-        ${{ inputs.metrics }}
-        \`\`\`
+        ```json
+EOF
+          echo "$METRICS_INPUT" >> "$SUMMARY_FILE"
+          cat >> "$SUMMARY_FILE" << 'EOF'
+        ```
         
-        EOF
+EOF
         fi
         
         # Add additional info if provided
-        if [[ -n "${{ inputs.additional-info }}" ]]; then
-          cat >> "$SUMMARY_FILE" << EOF
+        ADDITIONAL_INFO='${{ inputs.additional-info }}'
+        if [[ -n "$ADDITIONAL_INFO" ]]; then
+          cat >> "$SUMMARY_FILE" << 'EOF'
         ### 📝 Additional Information
         
-        ${{ inputs.additional-info }}
+EOF
+          echo "$ADDITIONAL_INFO" >> "$SUMMARY_FILE"
+          cat >> "$SUMMARY_FILE" << 'EOF'
         
-        EOF
+EOF
         fi
         
         echo "file=$SUMMARY_FILE" >> $GITHUB_OUTPUT
