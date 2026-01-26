@@ -29,6 +29,10 @@ runs:
       run: |
         mkdir -p .metrics
         
+        # Generate unique ID for this summary
+        UNIQUE_ID="$(date +%s%N | md5sum | head -c 8)"
+        echo "unique-id=$UNIQUE_ID" >> $GITHUB_OUTPUT
+        
         SUMMARY_FILE=".metrics/summary-${{ inputs.phase }}.md"
         
         # Determine status emoji
@@ -58,25 +62,28 @@ runs:
         EOF
         
         # Add metrics if provided
-        if [[ -n "${{ inputs.metrics }}" ]]; then
-          cat >> "$SUMMARY_FILE" << EOF
-        ### 📊 Metrics
-        
-        \`\`\`json
-        ${{ inputs.metrics }}
-        \`\`\`
-        
-        EOF
+        # Store in variable to safely handle JSON with special characters
+        METRICS_INPUT='${{ inputs.metrics }}'
+        if [[ -n "$METRICS_INPUT" ]]; then
+          {
+            echo "        ### 📊 Metrics"
+            echo "        "
+            echo "        \`\`\`json"
+            echo "$METRICS_INPUT"
+            echo "        \`\`\`"
+            echo "        "
+          } >> "$SUMMARY_FILE"
         fi
         
         # Add additional info if provided
-        if [[ -n "${{ inputs.additional-info }}" ]]; then
-          cat >> "$SUMMARY_FILE" << EOF
-        ### 📝 Additional Information
-        
-        ${{ inputs.additional-info }}
-        
-        EOF
+        ADDITIONAL_INFO='${{ inputs.additional-info }}'
+        if [[ -n "$ADDITIONAL_INFO" ]]; then
+          {
+            echo "        ### 📝 Additional Information"
+            echo "        "
+            echo "$ADDITIONAL_INFO"
+            echo "        "
+          } >> "$SUMMARY_FILE"
         fi
         
         echo "file=$SUMMARY_FILE" >> $GITHUB_OUTPUT
@@ -89,6 +96,7 @@ runs:
     - name: Upload summary artifact
       uses: actions/upload-artifact@v4
       with:
-        name: summary-${{ inputs.phase }}
+        name: summary-${{ inputs.phase }}-${{ steps.generate.outputs.unique-id }}
         path: .metrics/summary-${{ inputs.phase }}.md
         retention-days: 30
+        if-no-files-found: warn
