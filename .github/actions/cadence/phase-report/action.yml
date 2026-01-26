@@ -1,0 +1,64 @@
+name: 'Phase Report'
+description: 'Reporting phase for generating summaries and collecting final metrics'
+
+inputs:
+  phase:
+    description: 'Phase to report on'
+    required: true
+  status:
+    description: 'Status to report (success, warning, failure)'
+    required: true
+  metrics:
+    description: 'Metrics data as JSON'
+    required: false
+  artifacts-to-upload:
+    description: 'Path to artifacts to upload'
+    required: false
+  
+outputs:
+  report-id:
+    description: 'Unique identifier for this report'
+    value: ${{ steps.generate.outputs.report-id }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Generate report
+      id: generate
+      shell: bash
+      run: |
+        REPORT_ID="report-${{ inputs.phase }}-$(date +%s)"
+        echo "report-id=$REPORT_ID" >> $GITHUB_OUTPUT
+        echo "Generating report: $REPORT_ID"
+        
+    - name: Collect final metrics
+      id: metrics
+      uses: ./.github/actions/observability/metrics-collect
+      with:
+        phase: ${{ inputs.phase }}
+        metric-type: outcome
+        
+    - name: Generate comprehensive summary
+      uses: ./.github/actions/observability/summary-generate
+      with:
+        phase: ${{ inputs.phase }}
+        status: ${{ inputs.status }}
+        metrics: ${{ inputs.metrics }}
+        additional-info: |
+          **Report ID:** ${{ steps.generate.outputs.report-id }}
+          **Final Status:** ${{ inputs.status }}
+          
+    - name: Upload artifacts
+      if: inputs.artifacts-to-upload != ''
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.generate.outputs.report-id }}-artifacts
+        path: ${{ inputs.artifacts-to-upload }}
+        retention-days: 30
+        
+    - name: Upload metrics
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.generate.outputs.report-id }}-metrics
+        path: .metrics/
+        retention-days: 30
