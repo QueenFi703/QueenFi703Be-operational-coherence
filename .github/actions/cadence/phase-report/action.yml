@@ -52,13 +52,13 @@ runs:
       if: inputs.artifacts-to-upload != ''
       uses: actions/upload-artifact@v4
       with:
-        name: artifacts-${{ inputs.phase }}
+        name: ${{ steps.generate.outputs.report-id }}-artifacts
         path: ${{ inputs.artifacts-to-upload }}
         retention-days: 30
         
     - name: Upload metrics
       uses: actions/upload-artifact@v4
       with:
-        name: metrics-${{ inputs.phase }}
+        name: ${{ steps.generate.outputs.report-id }}-metrics
         path: .metrics/
         retention-days: 30
