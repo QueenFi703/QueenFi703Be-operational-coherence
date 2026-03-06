@@ -22,10 +22,11 @@ Not code that works once.
 
 ### For New Contributors
 
-1. **Read the mental model:** [docs/onboarding/MENTAL_MODEL.md](docs/onboarding/MENTAL_MODEL.md)
-2. **Explore a workflow:** [.github/workflows/ci.yml](.github/workflows/ci.yml)
-3. **See the pattern:** [.github/workflows/_template.yml](.github/workflows/_template.yml)
-4. **Start contributing:** [docs/onboarding/CONTRIBUTING.md](docs/onboarding/CONTRIBUTING.md)
+1. **Look up unfamiliar terms:** [docs/onboarding/GLOSSARY.md](docs/onboarding/GLOSSARY.md)
+2. **Read the mental model:** [docs/onboarding/MENTAL_MODEL.md](docs/onboarding/MENTAL_MODEL.md)
+3. **Explore a workflow:** [.github/workflows/ci.yml](.github/workflows/ci.yml)
+4. **See the pattern:** [.github/workflows/_template.yml](.github/workflows/_template.yml)
+5. **Start contributing:** [docs/onboarding/CONTRIBUTING.md](docs/onboarding/CONTRIBUTING.md)
 
 ### For Operators
 
@@ -291,6 +292,7 @@ cat .metrics/*.json
 ## Documentation
 
 ### For Learning
+- [Glossary](docs/onboarding/GLOSSARY.md) - Plain-language definitions for every technical term
 - [Mental Model](docs/onboarding/MENTAL_MODEL.md) - How to think about the system
 - [Contributing](docs/onboarding/CONTRIBUTING.md) - How to extend it
 

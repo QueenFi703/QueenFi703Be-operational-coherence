@@ -7,10 +7,11 @@ How to extend the system without breaking coherence.
 ## Before You Contribute
 
 ### Read These First
-1. [PHILOSOPHY.md](../architecture/PHILOSOPHY.md) - Understand the why
-2. [PRINCIPLES.md](../architecture/PRINCIPLES.md) - Learn the rules
-3. [PATTERNS.md](../architecture/PATTERNS.md) - See the structures
-4. [MENTAL_MODEL.md](./MENTAL_MODEL.md) - Get the mental model
+1. [GLOSSARY.md](./GLOSSARY.md) - Look up any term you don't recognize
+2. [PHILOSOPHY.md](../architecture/PHILOSOPHY.md) - Understand the why
+3. [PRINCIPLES.md](../architecture/PRINCIPLES.md) - Learn the rules
+4. [PATTERNS.md](../architecture/PATTERNS.md) - See the structures
+5. [MENTAL_MODEL.md](./MENTAL_MODEL.md) - Get the mental model
 
 **You don't need to memorize them.** Just read them once. The patterns will make sense as you work.
 
@@ -561,6 +562,7 @@ This means:
 
 ## Further Reading
 
+- [GLOSSARY.md](./GLOSSARY.md) - Plain-language definitions for every technical term
 - [PATTERNS.md](../architecture/PATTERNS.md) - Patterns to follow
 - [PRINCIPLES.md](../architecture/PRINCIPLES.md) - Rules to follow
 - [WORKFLOW_ANATOMY.md](./WORKFLOW_ANATOMY.md) - How workflows work
