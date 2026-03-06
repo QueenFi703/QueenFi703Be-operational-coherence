@@ -198,5 +198,5 @@ cycle training { train }
        return model
 
    def cycle_training():
-       train(train, train)
+       train(data, model)
    ```

@@ -57,6 +57,12 @@ class Transpiler:
             "",
         ]
 
+        # Build a lookup of action name -> (source, target) from the program
+        action_relations: dict = {}
+        for stmt in program.statements:
+            if isinstance(stmt, ActionDecl):
+                action_relations[stmt.name] = (stmt.relation.source, stmt.relation.target)
+
         # Collect entities as variables initialised to None
         for stmt in program.statements:
             if isinstance(stmt, EntityDecl):
@@ -73,14 +79,18 @@ class Transpiler:
                 lines.append(f"    return {tgt}")
                 lines.append("")
 
-        # Emit cycle runners
+        # Emit cycle runners using the correct source/target for each call
         for stmt in program.statements:
             if isinstance(stmt, CycleDecl):
                 lines.append(f"def cycle_{stmt.name}():")
                 lines.append(f'    """Cycle: {stmt.name}"""')
                 for step in stmt.body:
                     if isinstance(step, ActionCall):
-                        lines.append(f"    {step.name}({step.name}, {step.name})")
+                        if step.name in action_relations:
+                            src, tgt = action_relations[step.name]
+                            lines.append(f"    {step.name}({src}, {tgt})")
+                        else:
+                            lines.append(f"    {step.name}()  # unresolved action")
                 lines.append("")
 
         return "\n".join(lines)
