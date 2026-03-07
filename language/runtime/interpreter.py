@@ -205,8 +205,12 @@ def main() -> None:
         print("Aster language runtime ready. Pass a .co file to execute.")
         return
 
-    with open(args.file, encoding="utf-8") as fh:
-        source = fh.read()
+    try:
+        with open(args.file, encoding="utf-8") as fh:
+            source = fh.read()
+    except OSError as exc:
+        print(f"aster: error: cannot open '{args.file}': {exc}", file=sys.stderr)
+        sys.exit(1)
 
     interpreter = Interpreter()
     result = interpreter.run(source, strict=args.strict)
