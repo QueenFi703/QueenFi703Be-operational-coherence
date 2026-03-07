@@ -38,21 +38,21 @@ jobs:
         with:
           language: python
           cache-key: deploy-${{ github.sha }}
-          install-dependencies: 'false'
+          install-dependencies: 'true'
       
       # Phase 3: EXECUTE
       - name: Build artifacts
         id: build
         uses: ./.github/actions/cadence/phase-execute
         with:
-          command: echo "Building deployment artifacts"
+          command: pip install --quiet build && python -m build --outdir dist/
           timeout-minutes: 10
           
       - name: Deploy to ${{ github.event.inputs.environment || 'production' }}
         id: deploy
         uses: ./.github/actions/cadence/phase-execute
         with:
-          command: echo "Deploying to ${{ github.event.inputs.environment || 'production' }}"
+          command: DEPLOY_ENV=${{ github.event.inputs.environment || 'production' }} bash scripts/core/deploy.sh --env ${{ github.event.inputs.environment || 'production' }} --skip-build
           timeout-minutes: 15
       
       # Phase 4: REPORT

@@ -27,8 +27,12 @@ case "${1:-}" in
     shift
     exec bash "$SCRIPT_DIR/health-check.sh" "$@"
     ;;
+  deploy)
+    shift
+    exec bash "$SCRIPT_DIR/deploy.sh" "$@"
+    ;;
   *)
-    echo "Usage: ci-adapter.sh <phase-runner|metric-collector|health-check> [args...]"
+    echo "Usage: ci-adapter.sh <phase-runner|metric-collector|health-check|deploy> [args...]"
     exit 1
     ;;
 esac
