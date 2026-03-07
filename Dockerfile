@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Copy project files
 COPY pyproject.toml ./
+COPY README.md ./
 COPY language/ ./language/
 COPY compiler/ ./compiler/
 COPY bridge/ ./bridge/
