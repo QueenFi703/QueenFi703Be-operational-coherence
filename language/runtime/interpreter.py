@@ -181,3 +181,39 @@ class Interpreter:
                         f"[cycle:{cycle.name}] WARNING: action {step.name!r} not found"
                     )
         log.append(f"[cycle:{cycle.name}] end")
+
+
+def main() -> None:
+    """Entry-point for the ``aster`` CLI command."""
+    import argparse
+    import sys
+
+    parser = argparse.ArgumentParser(
+        prog="aster",
+        description="Run an Aster (.co) program.",
+    )
+    parser.add_argument("file", nargs="?", help="Path to a .co source file")
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="Raise an error on coherence violations",
+    )
+    args = parser.parse_args()
+
+    if args.file is None:
+        # No file given: print a brief banner and exit cleanly.
+        print("Aster language runtime ready. Pass a .co file to execute.")
+        return
+
+    with open(args.file, encoding="utf-8") as fh:
+        source = fh.read()
+
+    interpreter = Interpreter()
+    result = interpreter.run(source, strict=args.strict)
+
+    for entry in result.execution_log:
+        print(entry)
+
+    if not result.is_coherent:
+        print("WARNING: program is not fully coherent", file=sys.stderr)
+        sys.exit(1)

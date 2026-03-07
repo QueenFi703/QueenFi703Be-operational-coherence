@@ -1,0 +1,22 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy project files
+COPY pyproject.toml ./
+COPY language/ ./language/
+COPY compiler/ ./compiler/
+COPY bridge/ ./bridge/
+COPY examples/ ./examples/
+
+# Install the package
+RUN pip install --no-cache-dir hatchling && \
+    pip install --no-cache-dir -e .
+
+# Default: run a health check
+CMD ["python", "-c", "import language; print('Aster language runtime ready')"]
