@@ -351,6 +351,7 @@ Now that you have the mental model:
 
 ## Further Reading
 
+- [GLOSSARY.md](./GLOSSARY.md) - Plain-language definitions for every technical term used in this system
 - [WORKFLOW_ANATOMY.md](./WORKFLOW_ANATOMY.md) - Deep dive into workflow structure
 - [CONTRIBUTING.md](./CONTRIBUTING.md) - How to add to the system
 - [PHILOSOPHY.md](../architecture/PHILOSOPHY.md) - Why it's designed this way

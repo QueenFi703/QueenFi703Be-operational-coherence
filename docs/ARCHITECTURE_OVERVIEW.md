@@ -403,6 +403,7 @@ Same Behavior, Different Substrates:
 ## Further Reading
 
 - [README.md](../../README.md) - Start here
+- [GLOSSARY.md](./onboarding/GLOSSARY.md) - Plain-language definitions for every technical term
 - [PHILOSOPHY.md](../architecture/PHILOSOPHY.md) - Why it exists
 - [MENTAL_MODEL.md](../onboarding/MENTAL_MODEL.md) - How to think about it
 - [WORKFLOW_ANATOMY.md](../onboarding/WORKFLOW_ANATOMY.md) - Deep dive
